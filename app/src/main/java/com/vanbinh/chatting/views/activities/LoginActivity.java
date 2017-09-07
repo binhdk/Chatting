@@ -14,8 +14,6 @@ import android.support.design.widget.Snackbar;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -94,9 +92,9 @@ public class LoginActivity extends BaseActivity implements
 
         /*email password sign in*/
         populateAutoComplete();
-        binding.email.setOnTouchListener(new View.OnTouchListener(){
+        binding.email.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event){
+            public boolean onTouch(View v, MotionEvent event) {
                 binding.email.showDropDown();
                 return false;
             }
@@ -237,7 +235,7 @@ public class LoginActivity extends BaseActivity implements
                             else if (exception instanceof com.google.firebase.auth.FirebaseAuthInvalidUserException)
                                 Toast.makeText(LoginActivity.this, "No user account with this email",
                                         Toast.LENGTH_SHORT).show();
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Log.w(TAG, "signInWithCredential:failure", exception);
                         }
                         hideProgressDialog();
                     }
@@ -254,11 +252,11 @@ public class LoginActivity extends BaseActivity implements
         if (!mayRequestPermissions()) {
             return;
         }
-        getLoaderManager().initLoader(0,null,this);
+        getLoaderManager().initLoader(0, null, this);
 
         ArrayList<String> emailAddressesCollection = new ArrayList<>();
         Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, null);
-        if(cursor!=null) cursor.moveToFirst();
+        cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
             emailAddressesCollection.add(email);
@@ -331,11 +329,9 @@ public class LoginActivity extends BaseActivity implements
     }
 
     private boolean isEmailValid(String email) {
-        if (email == null) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-        }
+
+        return email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
     }
 
     private boolean isPasswordValid(String password) {
@@ -421,9 +417,9 @@ public class LoginActivity extends BaseActivity implements
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this,
                 Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY),ProfileQuery.PROJECTION,
+                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
                 ContactsContract.Contacts.Data.MIMETYPE +
-                     " = ?", new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE},
+                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE},
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
@@ -451,6 +447,7 @@ public class LoginActivity extends BaseActivity implements
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
 
     }
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,

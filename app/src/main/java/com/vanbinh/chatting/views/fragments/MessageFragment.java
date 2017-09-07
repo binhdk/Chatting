@@ -4,6 +4,7 @@ package com.vanbinh.chatting.views.fragments;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -33,9 +34,11 @@ public class MessageFragment extends Fragment {
     }
 
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
+
         binding.btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +93,7 @@ public class MessageFragment extends Fragment {
         binding.recycleViewMessage.setAdapter(adapter);
         return  rootView;
     }
-    public static class MessageViewHolder extends RecyclerView.ViewHolder {
+    private static class MessageViewHolder extends RecyclerView.ViewHolder {
         TextView messageTextView;
         TextView messageTimeView;
         TextView messengerTextView;

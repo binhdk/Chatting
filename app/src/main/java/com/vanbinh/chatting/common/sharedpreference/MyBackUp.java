@@ -5,11 +5,12 @@ import android.app.backup.SharedPreferencesBackupHelper;
 
 /**
  * Created by binh on 9/7/2017.
+ *
  */
 
 public class MyBackUp extends BackupAgentHelper {
-    static  final String Preferences_Backup_File_Name = "myBackupPreferences";
-    static  final  String PREFS_BACKUP_KEY ="backup";
+    static final String Preferences_Backup_File_Name = "myBackupPreferences";
+    static final  String PREFS_BACKUP_KEY ="backup";
 
     @Override
     public void onCreate() {

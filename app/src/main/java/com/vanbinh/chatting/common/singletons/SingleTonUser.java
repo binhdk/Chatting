@@ -8,6 +8,7 @@ import com.vanbinh.chatting.models.User;
 
 /**
  * Created by vanbinh on 8/18/2017.
+ *
  */
 
 public class SingleTonUser {

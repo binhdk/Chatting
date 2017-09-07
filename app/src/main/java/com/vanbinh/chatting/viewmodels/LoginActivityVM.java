@@ -5,6 +5,8 @@ import com.vanbinh.chatting.databinding.ActivityLoginBinding;
 
 /**
  * Created by vanbinh on 8/10/2017.
+ *
+ *
  */
 
 public class LoginActivityVM {

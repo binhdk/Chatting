@@ -14,13 +14,10 @@
         completions."
     </string>
 
-    <!--facebook login-->
-    <string name="facebook_app_id">2008433366111678</string>
-    <string name="fb_login_protocol_scheme">fb2008433366111678</string>
-
-    <!--twitter login-->
-    <string name="TWITTER_CONSUMER_KEY">yrjOfWtXy5oczf7wRrGX75x4F</string>
-    <string name="TWITTER_CONSUMER_SECRET">lYRaGKiW7xVXdA4oWQgByyG6V9s1LDgIP2ajkOxuKnnNpQ8Cdb</string>
+    <!--navigate item-->
+    <string name="action_home_item">Home</string>
+    <string name="action_my_info_item">My Info</string>
+    <string name="action_log_out_item">Log out</string>
 
     <!--connectAPIs-->
     <string name="cannot_connect_server">Cannot connect to server!</string>
@@ -39,7 +36,6 @@
         <item>Language</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="input">Input</string>
     <string name="token_expired">Token is expired</string>
@@ -49,5 +45,7 @@
     <!--splash screen-->
     <string name="splash_title">Welcome to chat app</string>
     <string name="hint_message_input">Message here</string>
+    <string name="header_navigate_view_title">Hello</string>
+    <string name="icon_send_message_description">image send message</string>
 
 </resources>

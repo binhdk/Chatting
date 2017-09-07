@@ -7,18 +7,12 @@
     android:layout_margin="@dimen/activity_horizontal_margin"
     tools:context="com.vanbinh.chatting.views.activities.SplashScreenActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_gravity="center"
-        android:layout_height="150dp"
-        android:gravity="center"
-        android:src="@drawable/splash_icon" />
     <TextView
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:text="@string/splash_title"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/splash_icon"/>
 </LinearLayout>

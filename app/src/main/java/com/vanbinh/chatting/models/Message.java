@@ -2,6 +2,7 @@ package com.vanbinh.chatting.models;
 
 /**
  * Created by vanbinh on 8/10/2017.
+ *
  */
 
 public class Message {

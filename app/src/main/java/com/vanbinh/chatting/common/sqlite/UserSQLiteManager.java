@@ -9,6 +9,7 @@ import com.vanbinh.chatting.models.User;
 
 /**
  * Created by vanbinh on 8/16/2017.
+ *
  */
 
 public class UserSQLiteManager extends SQLiteManager {
@@ -21,7 +22,7 @@ public class UserSQLiteManager extends SQLiteManager {
 
     public static synchronized UserSQLiteManager getInstance(Context context) {
         if (instance == null) {
-            instance = new UserSQLiteManager(context);
+            instance = new UserSQLiteManager(context.getApplicationContext());
         }
         return instance;
     }
@@ -58,7 +59,6 @@ public class UserSQLiteManager extends SQLiteManager {
             user.setAvatar(cursor.getString(4));
             user.setToken(cursor.getString(5));
         }
-        cursor.close();
         return user;
     }
 
@@ -87,13 +87,11 @@ public class UserSQLiteManager extends SQLiteManager {
         value.put("phone", user.getTel());
         value.put("avatar", user.getAvatar());
         value.put("token", user.getToken());
-        boolean result = this.update(SQLiteManager.TB_USER, value, user.getId());
-        return result;
+        return this.update(SQLiteManager.TB_USER, value, user.getId());
     }
 
     public boolean deleteUser(User user) {
-        boolean result = this.delete(SQLiteManager.TB_USER, user.getId());
-        return result;
+        return this.delete(SQLiteManager.TB_USER, user.getId());
     }
 
     public void deleteUser() {

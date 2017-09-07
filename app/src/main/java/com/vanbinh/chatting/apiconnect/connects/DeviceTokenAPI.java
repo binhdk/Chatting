@@ -13,18 +13,18 @@ import com.vanbinh.chatting.models.User;
 
 /**
  * Created by vanbinh on 8/18/2017.
+ *
  */
 
 public class DeviceTokenAPI extends BaseConnectAPI {
-    public static final String TAG="DeviceTokenAPI";
+    private static final String TAG="DeviceTokenAPI";
     public DeviceTokenAPI(Context context) {
         super(context, UrlConstants.UPDATE_URL,
                 null,
                 RequestMethod.POST,
                 true);
         User user=SingleTonUser.getInstance(context);
-        String json=new Gson().toJson(user);
-        this.data=json;
+        super.data=new Gson().toJson(user);
         Log.d(TAG,"DATA: "+data);
     }
 

@@ -8,6 +8,7 @@ import com.vanbinh.chatting.common.sharedpreference.MySharedPreference;
 
 /**
  * Created by vanbinh on 8/11/2017.
+ *
  */
 
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {

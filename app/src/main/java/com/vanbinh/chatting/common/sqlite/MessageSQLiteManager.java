@@ -11,11 +11,12 @@ import java.util.List;
 
 /**
  * Created by vanbinh on 8/16/2017.
+ *
  */
 
 public class MessageSQLiteManager{
     private static final String TAG="MessageSQLite";
-   private  SQLiteManager manager;
+    private  SQLiteManager manager;
     public List<Message> getAllMessage() {
         List<Message> list = new ArrayList<>();
         Message message = new Message();
@@ -53,19 +54,16 @@ public class MessageSQLiteManager{
         value.put("message",message.getMessage());
         value.put("username",message.getUsername());
         value.put("time",message.getTime());
-        boolean result=manager.insert(SQLiteManager.TB_MESSAGE,value);
-        return result;
+        return manager.insert(SQLiteManager.TB_MESSAGE,value);
     }
     public boolean update(Message message){
         ContentValues value=new ContentValues();
         value.put("message",message.getMessage());
         value.put("username",message.getUsername());
         value.put("time",message.getTime());
-        boolean result=manager.update(SQLiteManager.TB_MESSAGE,value,message.getId());
-        return result;
+        return manager.update(SQLiteManager.TB_MESSAGE,value,message.getId());
     }
     public boolean deleteMessage(Message message){
-        boolean result=manager.delete(SQLiteManager.TB_MESSAGE,message.getId());
-        return result;
+       return manager.delete(SQLiteManager.TB_MESSAGE,message.getId());
     }
 }

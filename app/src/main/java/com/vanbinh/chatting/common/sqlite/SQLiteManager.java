@@ -13,10 +13,11 @@ import java.io.File;
 
 /**
  * Created by vanbinh on 8/10/2017.
+ *
  */
 
 public class SQLiteManager extends SQLiteOpenHelper {
-    Context mContext;
+    private Context mContext;
     private static String DB_NAME = "chatting.db";
     private static int DB_NUMBER = 1;
     //table user
@@ -41,7 +42,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     static final String GROUP_ID = "id";
     static final String GROUP_NAME = "name";
     static final String GROUP_STATUS = "status";
-    String tb_user = "CREATE TABLE " + TB_USER + "("
+    private String tb_user = "CREATE TABLE " + TB_USER + "("
             + USER_ID + " integer primary key autoincrement, "
             + USER_NAME + " text not null, "
             + USER_EMAIL + " text not null, "
@@ -64,7 +65,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     protected SQLiteManager(Context context) {
         super(context, DB_NAME, null, DB_NUMBER);
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
     }
 
 
@@ -80,8 +81,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     public void createDatabase() {
         try {
             boolean dbExist = checkDataBase(DB_NAME);
-            if (dbExist) {
-            } else {
+            if(!dbExist){
                 SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(
                         getDBPath(mContext) + DB_NAME,
                         null);
@@ -93,8 +93,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-    public String getDBPath(Context context){
-        return "/data/data/" + context.getPackageName() + "/databases/";
+
+    private String getDBPath(Context context) {
+        return context.getDatabasePath(DB_NAME).getPath();
     }
 
     private boolean checkDataBase(String dbName) {
@@ -111,7 +112,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         if (checkDB != null)
             checkDB.close();
 
-        return checkDB != null ? true : false;
+        return checkDB != null;
     }
 
     public Cursor getAllDataFromTable(String tableName) {
@@ -129,7 +130,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = null;
         try {
-            cursor = database.query(tableName,columns, key, null, null, null, null);
+            cursor = database.query(tableName, columns, key, null, null, null, null);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 /**
  * Created by binh on 8/28/2017.
+ *
  */
 public class MessageAdapterTest {
     @Test

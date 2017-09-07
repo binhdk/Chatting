@@ -18,15 +18,17 @@ import com.vanbinh.chatting.views.activities.LoginActivity;
 
 /**
  * Created by vanbinh on 8/16/2017.
+ *
  */
 
 public abstract class BaseConnectAPI extends AsyncTask<Void, Void, String> {
-    public static final String TAG = "BaseConnectAPI";
-    public Context mContext;
-    public String url, data;
-    ProgressDialog pgDialog;
-    RequestMethod method;
-    JsonResponseFromUrl jsonResponseFromUrl;
+    private static final String TAG = "BaseConnectAPI";
+    protected Context mContext;
+    protected String url;
+    protected String data;
+    private ProgressDialog pgDialog;
+    private RequestMethod method;
+    private JsonResponseFromUrl jsonResponseFromUrl;
 
     public BaseConnectAPI(Context context, String url, String data, RequestMethod method, boolean refresh) {
         this.mContext = context;
@@ -36,7 +38,7 @@ public abstract class BaseConnectAPI extends AsyncTask<Void, Void, String> {
         this.refresh = refresh;
     }
 
-    public boolean refresh = false;
+    protected boolean refresh = false;
 
     @Override
     protected void onPreExecute() {
@@ -113,16 +115,17 @@ public abstract class BaseConnectAPI extends AsyncTask<Void, Void, String> {
 
     public abstract void doInBG();
 
-    public void onError() {
+    private void onError() {
         try {
             Log.d(TAG, url);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         Toast.makeText(mContext,
                 mContext.getString(R.string.cannot_connect_server), Toast.LENGTH_LONG).show();
     }
 
-    public void initDialog() {
+    private void initDialog() {
         pgDialog = new ProgressDialog(mContext) {
             @Override
             public void onBackPressed() {

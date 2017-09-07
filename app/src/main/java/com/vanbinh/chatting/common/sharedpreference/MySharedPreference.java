@@ -7,6 +7,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by vanbinh on 8/10/2017.
+ *
  */
 
 public class MySharedPreference {

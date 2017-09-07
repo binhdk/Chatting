@@ -19,6 +19,7 @@ import com.vanbinh.chatting.R;
 import com.vanbinh.chatting.views.activities.MainActivity;
 /**
  * Created by vanbinh on 8/16/2017.
+ *
  */
 
 public class LoginAPI extends BaseConnectAPI {

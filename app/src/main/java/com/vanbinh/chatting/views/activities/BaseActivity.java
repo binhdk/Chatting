@@ -7,10 +7,11 @@ import com.vanbinh.chatting.R;
 
 /**
  * Created by vanbinh on 8/15/2017.
+ *
  */
 
 public class BaseActivity extends AppCompatActivity {
-    public ProgressDialog mProgressDialog;
+    private ProgressDialog mProgressDialog;
     public void showProgressDialog(){
         if(mProgressDialog==null){
             mProgressDialog=new ProgressDialog(this);

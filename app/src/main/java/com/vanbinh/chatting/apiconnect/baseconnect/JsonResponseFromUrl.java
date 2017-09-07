@@ -4,17 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 /**
  * Created by vanbinh on 8/16/2017.
+ *
  */
 
 public class JsonResponseFromUrl {
-    String mUrl;
-    String mData;
+    private String mUrl;
+    private String mData;
     private int responseCode;
     public int getResponseCode() {
         return responseCode;
@@ -31,7 +34,7 @@ public class JsonResponseFromUrl {
     }
 
     public String getResponsePost() {
-        InputStreamReader reader = null;
+        InputStreamReader reader;
         String strJson = null;
         HttpURLConnection conn = null;
         try {
@@ -61,8 +64,6 @@ public class JsonResponseFromUrl {
             } else {
                 return null;
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -73,7 +74,7 @@ public class JsonResponseFromUrl {
     }
 
     public String getResponseGet() {
-        InputStreamReader reader = null;
+        InputStreamReader reader;
         String strJson = null;
         HttpURLConnection conn = null;
         try {
@@ -98,8 +99,6 @@ public class JsonResponseFromUrl {
             } else {
                 return null;
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -109,7 +108,7 @@ public class JsonResponseFromUrl {
         return strJson;
     }
     public String getResponseDelete() {
-        InputStreamReader reader = null;
+        InputStreamReader reader;
         String strJson = null;
         HttpURLConnection conn = null;
         try {
@@ -134,9 +133,7 @@ public class JsonResponseFromUrl {
             } else {
                 return null;
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }  catch (IOException e) {
             e.printStackTrace();
         } finally {
             if (conn != null)

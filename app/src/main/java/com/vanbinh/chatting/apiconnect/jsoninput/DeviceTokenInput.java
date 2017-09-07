@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by vanbinh on 8/18/2017.
+ *
  */
 
 public class DeviceTokenInput implements Serializable {
