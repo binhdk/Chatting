@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">FirebaseDemo</string>
+
+    <!-- Strings related to login  -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!--facebook login-->
+    <string name="facebook_app_id">2008433366111678</string>
+    <string name="fb_login_protocol_scheme">fb2008433366111678</string>
+
+    <!--twitter login-->
+    <string name="TWITTER_CONSUMER_KEY">yrjOfWtXy5oczf7wRrGX75x4F</string>
+    <string name="TWITTER_CONSUMER_SECRET">lYRaGKiW7xVXdA4oWQgByyG6V9s1LDgIP2ajkOxuKnnNpQ8Cdb</string>
+
+    <!--connectAPIs-->
+    <string name="cannot_connect_server">Cannot connect to server!</string>
+
+    <!--main activity-->
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="loading">Loading…</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="list_item_user">
+        <item>Change email</item>
+        <item>Change password</item>
+        <item>Language</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="input">Input</string>
+    <string name="token_expired">Token is expired</string>
+    <string name="error_login">Wrong email or password</string>
+
+
+    <!--splash screen-->
+    <string name="splash_title">Welcome to chat app</string>
+    <string name="hint_message_input">Message here</string>
+
+</resources>
