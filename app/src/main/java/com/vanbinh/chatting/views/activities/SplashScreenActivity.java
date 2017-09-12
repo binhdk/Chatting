@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.Transaction;
 import com.vanbinh.chatting.R;
 import com.vanbinh.chatting.common.singletons.SingleTonUser;
 import com.vanbinh.chatting.common.sqlite.UserSQLiteManager;
@@ -47,11 +46,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                 Log.d(TAG,"Not yet login!");
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             } else {
                 Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(i);
                 Log.d(TAG,"Logged user!");
                 finish();
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         } catch (Exception e) {
             e.printStackTrace();
