@@ -1,4 +1,4 @@
-package com.vanbinh.chatting.views.activities;
+package com.vanbinh.chatting.activities;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -22,8 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.vanbinh.chatting.common.singletons.SingleTonUser;
 import com.vanbinh.chatting.R;
-import com.vanbinh.chatting.views.fragments.MessageFragment;
-import com.vanbinh.chatting.views.fragments.UserInfoFragment;
+import com.vanbinh.chatting.fragments.MessageFragment;
+import com.vanbinh.chatting.fragments.UserInfoFragment;
 
 
 public class MainActivity extends BaseActivity

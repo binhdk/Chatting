@@ -1,4 +1,4 @@
-package com.vanbinh.chatting.views.fragments;
+package com.vanbinh.chatting.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.vanbinh.chatting.views.fragments;
+package com.vanbinh.chatting.fragments;
 
 
 import android.os.Bundle;
@@ -8,9 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vanbinh.chatting.R;
 import com.vanbinh.chatting.models.Message;
-import com.vanbinh.chatting.views.adapters.MessageAdapter;
+import com.vanbinh.chatting.adapters.MessageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

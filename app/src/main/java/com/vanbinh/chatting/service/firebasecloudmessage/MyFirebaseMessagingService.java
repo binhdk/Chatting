@@ -14,7 +14,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.vanbinh.chatting.R;
-import com.vanbinh.chatting.views.activities.MainActivity;
+import com.vanbinh.chatting.activities.MainActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public static  final  String TAG="PUSH_NOTIFICATION";

@@ -16,7 +16,7 @@ import com.vanbinh.chatting.apiconnect.baseconnect.RequestMethod;
 import com.vanbinh.chatting.apiconnect.UrlConstants;
 import com.vanbinh.chatting.models.User;
 import com.vanbinh.chatting.R;
-import com.vanbinh.chatting.views.activities.MainActivity;
+import com.vanbinh.chatting.activities.MainActivity;
 /**
  * Created by vanbinh on 8/16/2017.
  *

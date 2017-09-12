@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
-    tools:context="com.vanbinh.chatting.views.activities.SplashScreenActivity">
+    tools:context=".activities.SplashScreenActivity">
 
     <TextView
         android:layout_width="match_parent"

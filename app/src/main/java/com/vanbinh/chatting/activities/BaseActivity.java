@@ -1,4 +1,4 @@
-package com.vanbinh.chatting.views.activities;
+package com.vanbinh.chatting.activities;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;

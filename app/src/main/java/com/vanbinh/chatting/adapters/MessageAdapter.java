@@ -1,4 +1,4 @@
-package com.vanbinh.chatting.views.adapters;
+package com.vanbinh.chatting.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

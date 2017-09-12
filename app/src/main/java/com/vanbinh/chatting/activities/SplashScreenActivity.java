@@ -1,4 +1,4 @@
-package com.vanbinh.chatting.views.activities;
+package com.vanbinh.chatting.activities;
 
 import android.content.Intent;
 import android.database.SQLException;

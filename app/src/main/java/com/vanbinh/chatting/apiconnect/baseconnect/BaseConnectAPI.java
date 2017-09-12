@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.vanbinh.chatting.common.sqlite.UserSQLiteManager;
 import com.vanbinh.chatting.R;
-import com.vanbinh.chatting.views.activities.LoginActivity;
+import com.vanbinh.chatting.activities.LoginActivity;
 
 /**
  * Created by vanbinh on 8/16/2017.
