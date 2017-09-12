@@ -5,8 +5,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.databinding.DataBindingUtil;
-import android.net.ParseException;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -22,6 +20,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -44,7 +46,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
 
@@ -53,15 +54,8 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 
-import com.vanbinh.chatting.apiconnect.connects.DeviceTokenAPI;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.vanbinh.chatting.R;
-import com.vanbinh.chatting.common.sharedpreference.MySharedPreference;
-import com.vanbinh.chatting.common.singletons.SingleTonUser;
-import com.vanbinh.chatting.common.sqlite.UserSQLiteManager;
-import com.vanbinh.chatting.models.User;
-import com.vanbinh.chatting.viewmodels.LoginActivityVM;
-import com.vanbinh.chatting.databinding.ActivityLoginBinding;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -73,8 +67,12 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class LoginActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         android.app.LoaderManager.LoaderCallbacks<Cursor> {
-    private LoginActivityVM viewModel;
-    private ActivityLoginBinding binding;
+    private EditText passwordField;
+    private AutoCompleteTextView emailField;
+    private Button emailSignInButton, emailSignUpButton;
+    private SignInButton googleSignInButton;
+    private LoginButton fbLoginButton;
+    private TwitterLoginButton twitterLoginButton;
     private static final int REQUEST_PERMISSION_CODE = 0;
     private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
@@ -85,22 +83,26 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        viewModel = new LoginActivityVM(this, binding);
-        binding.setViewModel(viewModel);
+        setContentView(R.layout.activity_login);
+        emailField = (AutoCompleteTextView) findViewById(R.id.email);
+        passwordField =(EditText)findViewById(R.id.password);
+        emailSignInButton = (Button) findViewById(R.id.email_sign_in_button); 
+        emailSignUpButton = (Button) findViewById(R.id.email_sign_up_button); 
+        googleSignInButton =(SignInButton)findViewById(R.id.google_sign_in_button); 
+        fbLoginButton =(LoginButton)findViewById(R.id.fb_login_button);
+        twitterLoginButton=(TwitterLoginButton)findViewById(R.id.twitter_login_button); 
         mAuth = FirebaseAuth.getInstance();
 
-        /*email password sign in*/
+        /*emailField passwordField sign in*/
         populateAutoComplete();
-        binding.email.setOnTouchListener(new View.OnTouchListener() {
+        emailField.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                binding.email.showDropDown();
                 return false;
             }
         });
 
-        binding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        passwordField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -111,16 +113,16 @@ public class LoginActivity extends BaseActivity implements
             }
         });
 
-        binding.emailSignInButton.setOnClickListener(new OnClickListener() {
+        emailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                signInWithEmailPassword(binding.email.getText().toString(), binding.password.getText().toString());
+                signInWithEmailPassword(emailField.getText().toString(), passwordField.getText().toString());
             }
         });
-        binding.emailSignUpButton.setOnClickListener(new OnClickListener() {
+        emailSignUpButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAccount(binding.email.getText().toString(), binding.password.getText().toString());
+                createAccount(emailField.getText().toString(), passwordField.getText().toString());
             }
         });
 
@@ -133,8 +135,8 @@ public class LoginActivity extends BaseActivity implements
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        binding.googleSignInButton.setSize(SignInButton.SIZE_STANDARD);
-        binding.googleSignInButton.setOnClickListener(new OnClickListener() {
+        googleSignInButton.setSize(SignInButton.SIZE_STANDARD);
+        googleSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 signInWithGoogle();
@@ -142,7 +144,7 @@ public class LoginActivity extends BaseActivity implements
         });
 
         /*twitter sign in*/
-        binding.twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+        twitterLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
                 Log.d(TAG, "twitterLogin:success" + result);
@@ -157,8 +159,8 @@ public class LoginActivity extends BaseActivity implements
 
         /*facebook login*/
         mCallbackManager = CallbackManager.Factory.create();
-        binding.fbLoginButton.setReadPermissions("email", "public_profile");
-        binding.fbLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        fbLoginButton.setReadPermissions("emailField", "public_profile");
+        fbLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
@@ -188,7 +190,6 @@ public class LoginActivity extends BaseActivity implements
         if (!validateForm()) {
             return;
         }
-
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         signInWithCredential(credential);
     }
@@ -230,10 +231,10 @@ public class LoginActivity extends BaseActivity implements
                         } else {
                             Exception exception = task.getException();
                             if (exception instanceof com.google.firebase.auth.FirebaseAuthInvalidCredentialsException)
-                                Toast.makeText(LoginActivity.this, "Invalid password",
+                                Toast.makeText(LoginActivity.this, "Invalid passwordField",
                                         Toast.LENGTH_SHORT).show();
                             else if (exception instanceof com.google.firebase.auth.FirebaseAuthInvalidUserException)
-                                Toast.makeText(LoginActivity.this, "No user account with this email",
+                                Toast.makeText(LoginActivity.this, "No user account with this emailField",
                                         Toast.LENGTH_SHORT).show();
                             Log.w(TAG, "signInWithCredential:failure", exception);
                         }
@@ -253,48 +254,35 @@ public class LoginActivity extends BaseActivity implements
             return;
         }
         getLoaderManager().initLoader(0, null, this);
-
-        ArrayList<String> emailAddressesCollection = new ArrayList<>();
-        Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
-            emailAddressesCollection.add(email);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, emailAddressesCollection);
-        binding.email.setAdapter(adapter);
     }
 
     private boolean validateForm() {
-        binding.email.setError(null);
-        binding.password.setError(null);
+        emailField.setError(null);
+        passwordField.setError(null);
 
-        String email = binding.email.getText().toString();
-        String password = binding.password.getText().toString();
+        String email = emailField.getText().toString();
+        String password = passwordField.getText().toString();
         boolean valid = true;
         boolean cancel = false;
         View focusView = null;
         if (TextUtils.isEmpty(email)) {
-            binding.email.setError(getString(R.string.error_field_required));
-            focusView = binding.email;
+            emailField.setError(getString(R.string.error_field_required));
+            focusView = emailField;
             cancel = true;
             valid = false;
         } else if (!isEmailValid(email)) {
-            binding.email.setError(getString(R.string.error_invalid_email));
-            focusView = binding.email;
+            emailField.setError(getString(R.string.error_invalid_email));
+            focusView = emailField;
             cancel = true;
             valid = false;
         } else if (TextUtils.isEmpty(password)) {
-            binding.password.setError(getString(R.string.error_field_required));
-            focusView = binding.password;
+            passwordField.setError(getString(R.string.error_field_required));
+            focusView = passwordField;
             cancel = true;
             valid = false;
         } else if (!isPasswordValid(password)) {
-            binding.password.setError(getString(R.string.error_incorrect_password));
-            focusView = binding.password;
+            passwordField.setError(getString(R.string.error_incorrect_password));
+            focusView = passwordField;
             cancel = true;
             valid = false;
         }
@@ -348,7 +336,7 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        binding.twitterLoginButton.onActivityResult(requestCode, resultCode, data);
+        twitterLoginButton.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RC_SIGN_IN:
@@ -358,26 +346,6 @@ public class LoginActivity extends BaseActivity implements
         }
     }
 
-    //    save user information to sqlite and to server
-    private void saveUserSignIn(FirebaseUser firebaseUser) {
-        String token = new MySharedPreference.BuildShare()
-                .init(this, MySharedPreference.SR_MAIN)
-                .get()
-                .getString(MySharedPreference.SR_TOKEN, null);
-        User user = new User();
-        try {
-            user.setName(firebaseUser.getDisplayName());
-            user.setEmail(firebaseUser.getEmail());
-            user.setAvatar(String.valueOf(firebaseUser.getPhotoUrl()));
-            user.setToken(token);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        UserSQLiteManager sqLiteManager = UserSQLiteManager.getInstance(this);
-        sqLiteManager.addUser(user);
-        SingleTonUser.setInstance(this);
-        new DeviceTokenAPI(this).execute();
-    }
 
     //    require permission
     private boolean mayRequestPermissions() {
@@ -389,7 +357,7 @@ public class LoginActivity extends BaseActivity implements
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(binding.email, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(emailField, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -440,7 +408,7 @@ public class LoginActivity extends BaseActivity implements
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        binding.email.setAdapter(adapter);
+        emailField.setAdapter(adapter);
     }
 
     @Override
@@ -453,7 +421,6 @@ public class LoginActivity extends BaseActivity implements
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
                 ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
         };
-
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }

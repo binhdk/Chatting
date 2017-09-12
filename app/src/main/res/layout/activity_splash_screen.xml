@@ -3,16 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_margin="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
     tools:context="com.vanbinh.chatting.views.activities.SplashScreenActivity">
 
     <TextView
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:text="@string/splash_title"
-        android:textSize="30sp"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/splash_icon"/>
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:drawableTop="@drawable/splash_icon"
+        android:gravity="center"
+        android:text="@string/splash_title"
+        android:textSize="30sp" />
 </LinearLayout>

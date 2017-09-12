@@ -14,16 +14,14 @@ import com.vanbinh.chatting.common.singletons.SingleTonUser;
 import com.vanbinh.chatting.common.sqlite.UserSQLiteManager;
 
 public class SplashScreenActivity extends AppCompatActivity {
-    private static final String TAG ="SplashScreenActivity" ;
+    private static final String TAG = "SplashScreenActivity";
     private final int SPLASH_DISPLAY_LENGTH = 1000;
     UserSQLiteManager manager;
-    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         FirebaseApp.initializeApp(this);
-        mAuth = FirebaseAuth.getInstance();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -40,19 +38,19 @@ public class SplashScreenActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         try {
-            if ( mAuth.getCurrentUser()==null) {
-                Log.d(TAG, "Current user token:  "+SingleTonUser.getInstance(this).getToken());
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                Log.d(TAG, "Current user token:  " + SingleTonUser.getInstance(this).getToken());
                 Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                Log.d(TAG,"Not yet login!");
+                Log.d(TAG, "Not yet login!");
                 startActivity(intent);
                 finish();
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             } else {
                 Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(i);
-                Log.d(TAG,"Logged user!");
+                Log.d(TAG, "Logged user!");
                 finish();
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         } catch (Exception e) {
             e.printStackTrace();

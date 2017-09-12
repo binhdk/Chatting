@@ -12,7 +12,7 @@
         <item
             android:id="@+id/nav_log_out"
             android:icon="@drawable/ic_sign_out"
-            android:title="@string/action_log_out_item"/>
+            android:title="@string/action_log_out_item" />
     </group>
 
 </menu>

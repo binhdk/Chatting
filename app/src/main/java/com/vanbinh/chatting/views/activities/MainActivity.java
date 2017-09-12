@@ -2,13 +2,13 @@ package com.vanbinh.chatting.views.activities;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -24,32 +24,34 @@ import com.vanbinh.chatting.common.singletons.SingleTonUser;
 import com.vanbinh.chatting.R;
 import com.vanbinh.chatting.views.fragments.MessageFragment;
 import com.vanbinh.chatting.views.fragments.UserInfoFragment;
-import com.vanbinh.chatting.databinding.ActivityMainBinding;
 
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
-    DrawerLayout drawer;
-    private static final String TAG ="MainActivity";
+    private static final String TAG = "MainActivity";
     private GoogleApiClient mGoogleApiClient;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding= DataBindingUtil.setContentView(this,R.layout.activity_main);
-        setSupportActionBar(binding.appBarMain.toolbar);
-        mAuth=FirebaseAuth.getInstance();
-        drawer = binding.drawerLayout;
+        setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navView = (NavigationView) findViewById(R.id.nav_view);
+        setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         getFragmentManager().beginTransaction()
-                .add(R.id.fragment_content,new MessageFragment())
+                .add(R.id.fragment_content, new MessageFragment())
                 .commit();
-        binding.navView.setNavigationItemSelectedListener(this);
+        navView.setNavigationItemSelectedListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -63,8 +65,8 @@ public class MainActivity extends BaseActivity
     @Override
     public void onBackPressed() {
 
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -72,23 +74,23 @@ public class MainActivity extends BaseActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem  item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_info) {
             showUserInfo();
-        }else if(id==R.id.nav_log_out){
+        } else if (id == R.id.nav_log_out) {
             logout();
         }
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
 
     private void showUserInfo() {
-        Fragment fragment=new UserInfoFragment();
+        Fragment fragment = new UserInfoFragment();
         getFragmentManager().beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.fragment_content,fragment)
+                .replace(R.id.fragment_content, fragment)
                 .commit();
     }
 
@@ -111,8 +113,9 @@ public class MainActivity extends BaseActivity
                         }
                     });
         }
+
         SingleTonUser.deleteInstance();
-        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
         MainActivity.this.finish();
     }
 }

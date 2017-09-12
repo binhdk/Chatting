@@ -1,7 +1,6 @@
 package com.vanbinh.chatting.views.fragments;
 
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -16,9 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.vanbinh.chatting.R;
-import com.vanbinh.chatting.databinding.FragmentMessageBinding;
 import com.vanbinh.chatting.models.Message;
 import com.vanbinh.chatting.views.adapters.MessageAdapter;
 
@@ -29,67 +30,37 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class MessageFragment extends Fragment {
-    private FragmentMessageBinding binding;
     private List<Message> mMessageList;
     private View rootView;
-//        private FirebaseRecyclerAdapter<Message, MessageViewHolder> adapter;
-
     private MessageAdapter adapter;
     private LinearLayoutManager mLinearLayoutManager;
     private DatabaseReference reference;
+    private ImageView btnSendMessage;
+    private EditText editTextMessage;
+    private RecyclerView recycleViewMessage;
 
     public MessageFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
 
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
+        rootView = inflater.inflate(R.layout.fragment_message, container, false);
         init();
-        binding.btnSendMessage.setOnClickListener(new View.OnClickListener() {
+        btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 reference.push()
-                        .setValue(new Message(binding.editTextMessage.getText().toString(),
+                        .setValue(new Message(editTextMessage.getText().toString(),
                                 FirebaseAuth.getInstance()
                                         .getCurrentUser()
                                         .getDisplayName())
                         );
-                binding.editTextMessage.setText(null);
+                editTextMessage.setText(null);
             }
         });
-
-        rootView = binding.getRoot();
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        adapter = new MessageAdapter(mMessageList);
-
-//        adapter = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(
-//                Message.class,
-//                R.layout.item_message,
-//                MessageViewHolder.class,
-//                FirebaseDatabase.getInstance().getReference().child("messages")) {
-//            @Override
-//            public void startListening() {
-//                super.startListening();
-//            }
-//
-//            @Override
-//            protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
-//                if(model!= null) {
-//                    int layoutResource;
-//                    if(FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals(model.getUsername()))
-//                        layoutResource = R.layout.item_right_message;
-//                    else
-//                        layoutResource=R.layout.item_left_message;
-//                    View view = inflater.inflate(layoutResource,container,false);
-//                    viewHolder = new MessageViewHolder(view);
-//                    viewHolder.messageTextView.setText(model.getMessage());
-//                    viewHolder.messengerTextView.setText(model.getUsername());
-//                }
-//            }
-//        };
 
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
 
@@ -100,24 +71,29 @@ public class MessageFragment extends Fragment {
                 int lastVisiblePosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
                 if (lastVisiblePosition == -1 ||
                         (positionStart >= (messageCount - 1) && lastVisiblePosition == (positionStart - 1))) {
-                    binding.recycleViewMessage.scrollToPosition(positionStart);
+                    recycleViewMessage.scrollToPosition(positionStart);
                 }
             }
         });
-        binding.recycleViewMessage.setLayoutManager(mLinearLayoutManager);
-        binding.recycleViewMessage.setAdapter(adapter);
+        recycleViewMessage.setLayoutManager(mLinearLayoutManager);
+        recycleViewMessage.setAdapter(adapter);
         return rootView;
     }
 
     private void init() {
+        btnSendMessage = (ImageView) rootView.findViewById(R.id.btn_send_message);
+        editTextMessage = (EditText) rootView.findViewById(R.id.edit_text_message);
+        recycleViewMessage = (RecyclerView) rootView.findViewById(R.id.recycle_view_message);
         mMessageList = new ArrayList<>();
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        adapter = new MessageAdapter(mMessageList);
         reference = FirebaseDatabase.getInstance().getReference().child("messages");
         reference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Message message = dataSnapshot.getValue(Message.class);
                 mMessageList.add(message);
-                adapter.notifyItemInserted(mMessageList.size()-1);
+                adapter.notifyItemInserted(mMessageList.size() - 1);
             }
 
             @Override
@@ -134,7 +110,6 @@ public class MessageFragment extends Fragment {
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Message message = dataSnapshot.getValue(Message.class);
             }
 
             @Override
@@ -143,15 +118,4 @@ public class MessageFragment extends Fragment {
             }
         });
     }
-//    private static class MessageViewHolder extends RecyclerView.ViewHolder {
-//        TextView messageTextView;
-//        TextView messageTimeView;
-//        TextView messengerTextView;
-//
-//        public MessageViewHolder(View v) {
-//            super(v);
-//            messageTextView = (TextView) v.findViewById(R.id.message_text);
-//            messengerTextView = (TextView) v.findViewById(R.id.message_user);
-//        }
-//    }
 }
