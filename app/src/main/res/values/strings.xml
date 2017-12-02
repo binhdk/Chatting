@@ -4,7 +4,7 @@
     <!-- Strings related to login  -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in">Đăng nhập</string>
     <string name="action_sign_up">Sign up</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -47,5 +47,10 @@
     <string name="hint_message_input">Message here</string>
     <string name="header_navigate_view_title">Hello</string>
     <string name="icon_send_message_description">image send message</string>
+    <string name="action_get_sensor">Show sensor</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 </resources>
